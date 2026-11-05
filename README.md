@@ -132,7 +132,7 @@ while a relayer pays the fee, so the one-time address never holds gas. The scrip
 | **Stellar** | testnet | [`87638ac0…`](https://stellar.expert/explorer/testnet/tx/87638ac08e94efe0456f77f6c40ab1a3238a2de07ad9f405bbcba74a88aa6f74) | [`3979ebba…`](https://stellar.expert/explorer/testnet/tx/3979ebba5ec3ab0fee1c585f9bc11f8d890ad98a6b744ecea661aff6fae081b0) | the chain: claimant and memo |
 | **Sui** | devnet | [`3Ab9Usn2…`](https://suiscan.xyz/devnet/tx/3Ab9Usn2dDJrpAwsTe1pCiVaL1YFYp9MvhksMDjDE3Sv) | [`FQvyKktL…`](https://suiscan.xyz/devnet/tx/FQvyKktLGnKMzN8uiB7ArjVxbX1qsMj74RWi4igCZ3h8) | the envelope, passed beside the chain |
 | **Aptos** | devnet | [`0xe6843a80…`](https://explorer.aptoslabs.com/txn/0xe6843a80792484a902251a979b0607ac4f5d87fbafc543b921f89b89afffe55a?network=devnet) | [`0xda28e504…`](https://explorer.aptoslabs.com/txn/0xda28e5049b960f97d36f8676bf3c44bc98b2c94d41ed0ccff1d6bed0eddf1644?network=devnet) | the envelope, passed beside the chain |
-| **Solana** | devnet | not yet: its faucet now needs a browser | | |
+| **Solana** | devnet | [`ovu2yzxp…`](https://explorer.solana.com/tx/ovu2yzxpSFfDnnzQEAumrxqs4H1Rkj6NcY9X5tEtPqXKmaVfwfK1fEVsdtfqjHsjy7KQ6W7c3hgErqoPY1saGkd?cluster=devnet) | [`43RNugRx…`](https://explorer.solana.com/tx/43RNugRxenNGsNQLuE6zHsSQ57dHFhb5qAzw1joMSeBRd15udBuWzMRNdBw19ssoeBaK6BbPiykCTxo19eTqnZm9?cluster=devnet) | the chain: the envelope in a memo |
 
 The EVM row is [Kova](https://mykova.app)'s own private payments, made with the same derivation
 (checked against Kova's outputs in `test/vectors/kova-evm.json`). On Sui and Aptos a plain transfer
