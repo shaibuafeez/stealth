@@ -2,7 +2,7 @@
 
 # stealth
 
-**Private payments on any chain.**
+**Private payments on EVM, Solana, Sui, Aptos and Stellar.**
 
 Every payment lands at a fresh address only its receiver can find.<br/>
 A sealed note says who paid and why. Spending never needs gas.
@@ -118,7 +118,30 @@ Full specification, equations and threat model: **[DESIGN.md](DESIGN.md)**.
 | **Solana** | ed25519 | base58 | envelope in a memo | fee payer |
 | **Sui** | ed25519 | BLAKE2b(flag ‖ key) | envelope in an event | sponsored transaction |
 | **Aptos** | ed25519 | SHA3(key ‖ scheme) | envelope in an event | fee-payer transaction |
-| **Stellar** | ed25519 | StrKey `G…` | envelope | claimable balance + fee bump |
+| **Stellar** | ed25519 | StrKey `G…` | ephemeral key in the hash memo | claimable balance, sponsored reserves |
+
+### Tested on real networks
+
+Each round trip pays a one-time address, has the receiver find it, then spends everything in it
+while a relayer pays the fee, so the one-time address never holds gas. The scripts are in
+[`live/`](live); rerun them to get fresh links.
+
+| Chain | Network | Paid to a one-time address | Spent, relayer paid the fee | Found from |
+|---|---|---|---|---|
+| **EVM** | Monad testnet | [`0x62b66ba6…`](https://testnet.monadscan.com/tx/0x62b66ba678e6373fb963a95e6acd7993c1f7a9237dcf192a22facda913069992) | [`0x969774c6…`](https://testnet.monadscan.com/tx/0x969774c69680a48df7b2681087ba4af971e09394ed7fd625f5fd08cc03b1e4a2) | the ERC-5564 announcer |
+| **Stellar** | testnet | [`87638ac0…`](https://stellar.expert/explorer/testnet/tx/87638ac08e94efe0456f77f6c40ab1a3238a2de07ad9f405bbcba74a88aa6f74) | [`3979ebba…`](https://stellar.expert/explorer/testnet/tx/3979ebba5ec3ab0fee1c585f9bc11f8d890ad98a6b744ecea661aff6fae081b0) | the chain: claimant and memo |
+| **Sui** | devnet | [`3Ab9Usn2…`](https://suiscan.xyz/devnet/tx/3Ab9Usn2dDJrpAwsTe1pCiVaL1YFYp9MvhksMDjDE3Sv) | [`FQvyKktL…`](https://suiscan.xyz/devnet/tx/FQvyKktLGnKMzN8uiB7ArjVxbX1qsMj74RWi4igCZ3h8) | the envelope, passed beside the chain |
+| **Aptos** | devnet | [`0xe6843a80…`](https://explorer.aptoslabs.com/txn/0xe6843a80792484a902251a979b0607ac4f5d87fbafc543b921f89b89afffe55a?network=devnet) | [`0xda28e504…`](https://explorer.aptoslabs.com/txn/0xda28e5049b960f97d36f8676bf3c44bc98b2c94d41ed0ccff1d6bed0eddf1644?network=devnet) | the envelope, passed beside the chain |
+| **Solana** | devnet | not yet: its faucet now needs a browser | | |
+
+The EVM row is [Kova](https://mykova.app)'s own private payments, made with the same derivation
+(checked against Kova's outputs in `test/vectors/kova-evm.json`). On Sui and Aptos a plain transfer
+carries no free-form bytes, so an app posts the envelope in a Move event or through an indexer; the
+live runs hand it over directly and check everything else on chain. Devnets reset, so their links
+expire.
+
+**Not covered:** chains with other key types or account models, such as Bitcoin and Starknet.
+Tron uses EVM keys with its own address format, so it needs only an adapter.
 
 One-time keys on the ed25519 chains are raw scalars. stealth signs with them directly, and the
 signatures verify under standard Ed25519, so a one-time address signs like any account.
@@ -168,11 +191,17 @@ promise users more.
 
 ```bash
 pnpm install
-pnpm test          # 64 tests: every chain, Kova compatibility, conformance vectors
+pnpm test          # 80 tests: every chain, Kova compatibility, conformance vectors
 pnpm typecheck
 pnpm vectors       # rebuild the conformance vectors
 pnpm compile && node examples/05-solana.mjs
+
+cd live && npm install   # the round trips on public test networks
+node stellar.mjs         # Stellar testnet; Sui, Aptos and Solana run on devnet
 ```
+
+A run makes a throwaway relayer key in `live/keys.json` (ignored by git) and asks the network's
+faucet for test coins. Where a faucet only works in a browser, the script prints the address to fund.
 
 ## API
 
@@ -181,7 +210,7 @@ pnpm compile && node examples/05-solana.mjs
 | Keys | `deriveKeys`, `fromSignature`, `fromSeed`, `keysMessage` | `stealthKeysFromSignature`, `stealthKeysMessage` |
 | Share | `metaAddress`, `parseMetaAddress`, `encodeViewKey`, `parseViewKey` | `stealthMetaAddress`, `stealthViewKey`, `registerKeysCalldata` |
 | Pay | `createPayment`, `encodeEnvelope` | `generateStealthPayment`, `announceCalldata` |
-| Find | `findPayment`, `openPaymentMemo`, `decodeEnvelope` | `scanAnnouncements`, `checkStealthAddress`, `openStealthMemo`, `stealthSender` |
+| Find | `findPayment`, `openPaymentMemo`, `readEnvelope` | `scanAnnouncements`, `checkStealthAddress`, `openStealthMemo`, `stealthSender` |
 | Spend | `paymentPrivateKey`, `signWithScalar` | `stealthPrivateKey`, `signStealthTransfer` |
 | Route | `routePayment`, `planPrivateSpend` | |
 
