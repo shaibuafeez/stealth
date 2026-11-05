@@ -45,6 +45,8 @@ export interface ChainAdapter {
     address(publicKey: Bytes): string;
     /** An address's raw bytes, which a sealed note is bound to. */
     addressBytes(address: string): Bytes;
+    /** An address written from its raw bytes, as the chain writes it: the inverse of addressBytes. */
+    addressFromBytes(bytes: Bytes): string;
 }
 /** A payment as announced: enough for its receiver, and nobody else, to find and open it. */
 export interface Announcement {

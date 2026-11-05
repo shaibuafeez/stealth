@@ -19,6 +19,11 @@ export const solana = {
             throw new Error('A Solana address is 32 bytes');
         return bytes;
     },
+    addressFromBytes(bytes) {
+        if (bytes.length !== 32)
+            throw new Error('A Solana address is 32 bytes');
+        return base58.encode(bytes);
+    },
 };
 /** The one-time address's signature over a serialized Solana transaction message. */
 export const signSolanaMessage = (stealthPrivateKey, message) => signWithScalar(message, stealthPrivateKey);

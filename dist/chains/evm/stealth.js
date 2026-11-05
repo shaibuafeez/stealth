@@ -14,6 +14,11 @@ export const evm = {
     scheme: secp256k1Scheme,
     address: (publicKey) => publicKeyToAddress(bytesToHex(uncompressed(publicKey))),
     addressBytes: (address) => hexToBytes(getAddress(address)),
+    addressFromBytes(bytes) {
+        if (bytes.length !== 20)
+            throw new Error('An EVM address is 20 bytes');
+        return getAddress(bytesToHex(bytes));
+    },
 };
 export const STEALTH_SCHEME_ID = 1n;
 const hex = (bytes) => `0x${toHex(bytes)}`;

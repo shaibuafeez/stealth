@@ -44,7 +44,22 @@ const trimmed = (bytes: Bytes) => {
   return bytes.slice(i)
 }
 
-/** An envelope's fields, or null when the bytes aren't a v1 envelope. The address stays raw bytes. */
+/**
+ * An envelope read back as an announcement for one chain, ready for findPayment and
+ * openPaymentMemo; null when the bytes aren't a v1 envelope or don't hold an address of that chain.
+ */
+export function readEnvelope(chain: ChainAdapter, bytes: Bytes): Announcement | null {
+  const fields = decodeEnvelope(bytes)
+  if (!fields) return null
+  const { stealthAddressBytes, ...rest } = fields
+  try {
+    return { ...rest, stealthAddress: chain.addressFromBytes(stealthAddressBytes) }
+  } catch {
+    return null
+  }
+}
+
+/** An envelope's fields, or null when the bytes aren't a v1 envelope. The address stays raw bytes: readEnvelope writes it for a chain. */
 export function decodeEnvelope(bytes: Bytes): (Omit<Announcement, 'stealthAddress'> & { stealthAddressBytes: Bytes }) | null {
   try {
     if (bytes[0] !== ENVELOPE_VERSION || bytes.length < 8) return null

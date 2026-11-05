@@ -279,8 +279,9 @@ each chain. A port to another language is conformant when it reproduces every va
 
 1. **Scheme.** If accounts are secp256k1 or ed25519 keys, reuse one. Otherwise implement
    `StealthScheme` (and register a scheme id).
-2. **Chain adapter.** `tag`, `address(publicKey)` exactly as the chain writes addresses, and
-   `addressBytes(address)` that validates and returns the raw bytes.
+2. **Chain adapter.** `tag`, `address(publicKey)` exactly as the chain writes addresses,
+   `addressBytes(address)` that validates and returns the raw bytes, and `addressFromBytes(bytes)`,
+   its inverse, so a receiver reading an envelope gets the address back as the chain writes it.
 3. **Signing helper.** The one function that signs the chain's native transaction with a one-time
    key (for ed25519 chains: the chain's signing-message rules around `signWithScalar`).
 4. **Transport.** Use the chain's ERC-5564-style announcer if one exists; otherwise carry the envelope
@@ -289,6 +290,9 @@ each chain. A port to another language is conformant when it reproduces every va
 6. **Vectors and tests.** Add the chain to `scripts/vectors.mjs`, and tests that: payments are
    found only by their receiver; the one-time key's address matches; its signatures verify under the
    chain's standard verifier; a known address encodes as the chain's own tools encode it.
+7. **A live round trip.** Add a script to `live/` that pays a one-time address on a public test
+   network, finds it, and spends it with a relayer paying the fee. Offline tests can't catch what
+   only the network checks.
 
 ## 15. Versioning
 

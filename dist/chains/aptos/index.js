@@ -18,6 +18,11 @@ export const aptos = {
             throw new Error('An Aptos address is 32 bytes');
         return bytes;
     },
+    addressFromBytes(bytes) {
+        if (bytes.length !== 32)
+            throw new Error('An Aptos address is 32 bytes');
+        return `0x${toHex(bytes)}`;
+    },
 };
 /**
  * What an Aptos signature covers: SHA3-256 of the domain ("APTOS::RawTransaction", or

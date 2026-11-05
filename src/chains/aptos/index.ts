@@ -20,6 +20,10 @@ export const aptos: ChainAdapter = {
     if (bytes.length !== 32) throw new Error('An Aptos address is 32 bytes')
     return bytes
   },
+  addressFromBytes(bytes) {
+    if (bytes.length !== 32) throw new Error('An Aptos address is 32 bytes')
+    return `0x${toHex(bytes)}`
+  },
 }
 
 /**

@@ -19,6 +19,11 @@ export const sui = {
             throw new Error('A Sui address is 32 bytes');
         return bytes;
     },
+    addressFromBytes(bytes) {
+        if (bytes.length !== 32)
+            throw new Error('A Sui address is 32 bytes');
+        return `0x${toHex(bytes)}`;
+    },
 };
 /** The digest a Sui signature covers: BLAKE2b-256 of the transaction intent (0,0,0) and its BCS bytes. */
 export const suiTransactionDigest = (transactionBytes) => blake2b(concat(new Uint8Array([0, 0, 0]), transactionBytes), { dkLen: 32 });

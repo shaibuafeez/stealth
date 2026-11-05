@@ -21,6 +21,10 @@ export const sui: ChainAdapter = {
     if (bytes.length !== 32) throw new Error('A Sui address is 32 bytes')
     return bytes
   },
+  addressFromBytes(bytes) {
+    if (bytes.length !== 32) throw new Error('A Sui address is 32 bytes')
+    return `0x${toHex(bytes)}`
+  },
 }
 
 /** The digest a Sui signature covers: BLAKE2b-256 of the transaction intent (0,0,0) and its BCS bytes. */

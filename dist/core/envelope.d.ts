@@ -18,7 +18,12 @@ import type { Announcement, ChainAdapter } from './types.js';
  */
 export declare const ENVELOPE_VERSION = 1;
 export declare function encodeEnvelope(chain: ChainAdapter, a: Announcement): Bytes;
-/** An envelope's fields, or null when the bytes aren't a v1 envelope. The address stays raw bytes. */
+/**
+ * An envelope read back as an announcement for one chain, ready for findPayment and
+ * openPaymentMemo; null when the bytes aren't a v1 envelope or don't hold an address of that chain.
+ */
+export declare function readEnvelope(chain: ChainAdapter, bytes: Bytes): Announcement | null;
+/** An envelope's fields, or null when the bytes aren't a v1 envelope. The address stays raw bytes: readEnvelope writes it for a chain. */
 export declare function decodeEnvelope(bytes: Bytes): (Omit<Announcement, 'stealthAddress'> & {
     stealthAddressBytes: Bytes;
 }) | null;

@@ -32,10 +32,7 @@ function crc16(bytes: Bytes): Bytes {
 export const stellar: ChainAdapter = {
   tag: 'stellar',
   scheme: ed25519Scheme,
-  address(publicKey) {
-    const payload = concat(new Uint8Array([ACCOUNT_ID]), publicKey)
-    return base32.encode(concat(payload, crc16(payload))).replace(/=+$/, '')
-  },
+  address: (publicKey) => accountId(publicKey),
   addressBytes(address) {
     const raw = base32.decode(address.padEnd(Math.ceil(address.length / 8) * 8, '='))
     const payload = raw.slice(0, -2)
@@ -43,6 +40,14 @@ export const stellar: ChainAdapter = {
       throw new Error('Not a Stellar account id (G…)')
     return payload.slice(1)
   },
+  addressFromBytes: (bytes) => accountId(bytes),
+}
+
+/** An ed25519 public key as a Stellar account id: StrKey, G…. */
+function accountId(publicKey: Bytes): string {
+  if (publicKey.length !== 32) throw new Error('A Stellar account id holds a 32-byte key')
+  const payload = concat(new Uint8Array([ACCOUNT_ID]), publicKey)
+  return base32.encode(concat(payload, crc16(payload))).replace(/=+$/, '')
 }
 
 /** The hash a Stellar signature covers: SHA-256(SHA-256(network passphrase) ‖ ENVELOPE_TYPE_TX ‖ tx XDR). */
