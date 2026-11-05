@@ -10,7 +10,7 @@ import { deriveKeys, fromSignature, metaAddress, viewKeyOf } from '../src/core/k
 import { createPayment, findPayment, openPaymentMemo, paymentPrivateKey } from '../src/core/stealth.js'
 import type { Memo } from '../src/core/memo.js'
 import type { ChainAdapter } from '../src/core/types.js'
-import spec from './vectors/stealthkit-v1.json' with { type: 'json' }
+import spec from './vectors/stealth-v1.json' with { type: 'json' }
 
 const chains: Record<string, ChainAdapter> = { eth: evm, sol: solana, sui, aptos, stellar }
 

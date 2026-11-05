@@ -1,5 +1,5 @@
 /**
- * Writes the normative test vectors (test/vectors/stealthkit-v1.json): fixed inputs, and every
+ * Writes the normative test vectors (test/vectors/stealth-v1.json): fixed inputs, and every
  * output an implementation must reproduce exactly, for each chain. A port to another language is
  * conformant when it matches every value. Run: pnpm vectors
  */
@@ -58,12 +58,12 @@ const vector = (chain, ephemeral) => {
 const ed25519Ephemeral = toHex(deriveKeys(solana, { spending: fromHex('33'.repeat(32)), viewing: fromHex('33'.repeat(32)) }, input.labels).spendingPrivateKey)
 const out = {
   version: 1,
-  note: 'Normative: an implementation of stealthkit v1 must reproduce every output from these inputs. Hex is lowercase without 0x.',
+  note: 'Normative: an implementation of stealth v1 must reproduce every output from these inputs. Hex is lowercase without 0x.',
   input,
   vectors: [
     vector(evm, '33'.repeat(32)),
     ...[solana, sui, aptos, stellar].map((c) => vector(c, ed25519Ephemeral)),
   ],
 }
-writeFileSync(new URL('../test/vectors/stealthkit-v1.json', import.meta.url), `${JSON.stringify(out, null, 2)}\n`)
+writeFileSync(new URL('../test/vectors/stealth-v1.json', import.meta.url), `${JSON.stringify(out, null, 2)}\n`)
 console.log(`wrote ${out.vectors.length} vectors`)

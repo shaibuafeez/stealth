@@ -14,8 +14,8 @@ const wide = (bytes: Bytes) => {
   return k
 }
 const scalarBytes = (k: bigint) => toLittleEndian(k, 32)
-const SECRET_LABEL = utf8('stealthkit:ed25519:secret')
-const NONCE_LABEL = utf8('stealthkit:ed25519:nonce')
+const SECRET_LABEL = utf8('stealth:ed25519:secret')
+const NONCE_LABEL = utf8('stealth:ed25519:nonce')
 
 /**
  * Stealth addresses on ed25519, for Solana, Sui and Aptos: the CryptoNote construction Monero has

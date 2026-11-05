@@ -8,7 +8,7 @@ Thank you for helping make private payments work everywhere.
   library. If a change needs to, it belongs in a `ChainAdapter`, a scheme, a transport or a sponsor.
 - **Wire formats are versioned, never reinterpreted.** A change to a sealed note, the envelope or a
   scheme is a new version byte or scheme id, with the old one still read.
-- **Vectors are normative.** If `pnpm vectors` changes `test/vectors/stealthkit-v1.json`, say why in
+- **Vectors are normative.** If `pnpm vectors` changes `test/vectors/stealth-v1.json`, say why in
   the pull request: it breaks every other implementation.
 - **Kova compatibility holds.** `test/vectors/kova-evm.json` must keep passing.
 

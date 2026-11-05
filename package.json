@@ -1,16 +1,16 @@
 {
-  "name": "stealthkit",
+  "name": "stealth-sdk",
   "version": "1.0.0",
   "description": "Private payments on any chain: one-time stealth addresses, sealed notes, view keys and gasless spending. ERC-5564 on EVM, an ed25519 scheme for Solana, Sui, Aptos and Stellar. Extracted from Kova.",
   "license": "MIT",
   "author": "Kova (https://mykova.app)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shaibuafeez/stealthkit.git"
+    "url": "git+https://github.com/shaibuafeez/stealth.git"
   },
-  "homepage": "https://github.com/shaibuafeez/stealthkit#readme",
+  "homepage": "https://github.com/shaibuafeez/stealth#readme",
   "bugs": {
-    "url": "https://github.com/shaibuafeez/stealthkit/issues"
+    "url": "https://github.com/shaibuafeez/stealth/issues"
   },
   "type": "module",
   "exports": {

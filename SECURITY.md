@@ -1,6 +1,6 @@
 # Security
 
-stealthkit handles keys that control money. Please report vulnerabilities privately, never in a
+stealth handles keys that control money. Please report vulnerabilities privately, never in a
 public issue.
 
 **Report:** open a [GitHub security advisory](../../security/advisories/new) on this repository.

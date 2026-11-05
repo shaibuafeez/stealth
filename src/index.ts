@@ -1,14 +1,14 @@
 /**
- * stealthkit: private payments on any chain.
+ * stealth: private payments on any chain.
  *
  * The core is chain-neutral (keys, meta-addresses, one-time addresses, view keys, sealed notes,
  * the announcement envelope, the privacy router). Chains plug in through an adapter:
  *
- *   import { evm } from 'stealthkit/evm'          // Monad, Ethereum, Base, … (ERC-5564)
- *   import { solana } from 'stealthkit/solana'
- *   import { sui } from 'stealthkit/sui'
- *   import { aptos } from 'stealthkit/aptos'
- *   import { stellar } from 'stealthkit/stellar'
+ *   import { evm } from 'stealth-sdk/evm'          // Monad, Ethereum, Base, … (ERC-5564)
+ *   import { solana } from 'stealth-sdk/solana'
+ *   import { sui } from 'stealth-sdk/sui'
+ *   import { aptos } from 'stealth-sdk/aptos'
+ *   import { stellar } from 'stealth-sdk/stellar'
  */
 export * from './core/bytes.js'
 export * from './core/envelope.js'

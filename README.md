@@ -1,6 +1,6 @@
 <div align="center">
 
-# stealthkit
+# stealth
 
 **Private payments on any chain.**
 
@@ -8,7 +8,7 @@ Every payment lands at a fresh address only its receiver can find.<br/>
 A sealed note says who paid and why. Spending never needs gas.
 
 [![MIT](https://img.shields.io/badge/license-MIT-0b1a1d)](LICENSE)
-[![CI](https://github.com/shaibuafeez/stealthkit/actions/workflows/ci.yml/badge.svg)](https://github.com/shaibuafeez/stealthkit/actions/workflows/ci.yml)
+[![CI](https://github.com/shaibuafeez/stealth/actions/workflows/ci.yml/badge.svg)](https://github.com/shaibuafeez/stealth/actions/workflows/ci.yml)
 [![chains](https://img.shields.io/badge/chains-EVM%20·%20Solana%20·%20Sui%20·%20Aptos%20·%20Stellar-d46558)](#chains)
 [![ERC-5564](https://img.shields.io/badge/ERC--5564-compatible-0b1a1d)](https://eips.ethereum.org/EIPS/eip-5564)
 
@@ -19,7 +19,7 @@ A sealed note says who paid and why. Spending never needs gas.
 ---
 
 On a public chain, one receiving address is a public ledger of your life: every client, every
-salary, every sale, forever. **stealthkit** gives every payment its own address. Senders make it
+salary, every sale, forever. **stealth** gives every payment its own address. Senders make it
 from one string you share; only you can tell it's yours; you spend from it without ever funding it.
 
 It is the privacy layer of [Kova](https://mykova.app), a dollar wallet live on Monad, taken out so
@@ -27,20 +27,20 @@ anyone can build it in. One chain-neutral core, a thin adapter per chain:
 
 ```
 st:eth:0x…  ──►  0x616A0ff1A9c1587005Eb13b488d5219478aaFF35        (any EVM chain)
-st:sol:0x…  ──►  9NhcBA9tEP5GKcA6jcPpS5XJoBcNM4QTYEMQPGT6okQk      (Solana)
-st:stellar… ──►  GB6GZGZVHKJUL4I7TEVRI44GXA5RHVUZARXL3YYB6A4E345LLTIO3Y3M
+st:sol:0x…  ──►  961srFbwrLFpzhWBCDRHjTMuJukNtCPAAwwbhKd2BBuD      (Solana)
+st:stellar… ──►  GB4CMZAIQ4SKEANSBZUBRXDZBT5T5FU2ZFNOS554NQI5MV3HT2HNYSCO
 ```
 
 ## Quick start
 
 ```bash
-npm install stealthkit viem
+npm install stealth-sdk viem
 ```
 
 **Receive.** Make keys from a signature your wallet already gives you. Nothing to store.
 
 ```ts
-import { stealthKeysFromSignature, stealthKeysMessage, stealthMetaAddress } from 'stealthkit/evm'
+import { stealthKeysFromSignature, stealthKeysMessage, stealthMetaAddress } from 'stealth-sdk/evm'
 
 const signature = await wallet.signMessage({ message: stealthKeysMessage('MyApp', wallet.address) })
 const keys = stealthKeysFromSignature(signature)
@@ -50,7 +50,7 @@ const meta = stealthMetaAddress(keys) // st:eth:0x… share it, or publish it in
 **Send.** A fresh address for this payment, and a note only the receiver can read.
 
 ```ts
-import { announceCalldata, generateStealthPayment } from 'stealthkit/evm'
+import { announceCalldata, generateStealthPayment } from 'stealth-sdk/evm'
 
 const payment = generateStealthPayment(meta, { name: 'Ada', note: 'For lunch' })
 // pay payment.stealthAddress, then announce it so the receiver can find it:
@@ -60,7 +60,7 @@ const data = announceCalldata(payment, token, amount) // → ERC-5564 announcer
 **Find and spend.** Scan with the viewing key; spend with a signature a relayer submits.
 
 ```ts
-import { scanAnnouncements, signStealthTransfer, stealthPrivateKey, viewKeyOf } from 'stealthkit/evm'
+import { scanAnnouncements, signStealthTransfer, stealthPrivateKey, viewKeyOf } from 'stealth-sdk/evm'
 
 const [found] = await scanAnnouncements({ client, view: viewKeyOf(keys), fromBlock, toBlock })
 const key = stealthPrivateKey(keys, found.ephemeralPublicKey)
@@ -71,8 +71,8 @@ const { calldata } = await signStealthTransfer({ stealthPrivateKey: key, token, 
 The same three moves on Solana, Sui, Aptos or Stellar, with the chain-neutral core:
 
 ```ts
-import { createPayment, deriveKeys, findPayment, fromSeed, metaAddress, viewKeyOf } from 'stealthkit'
-import { solana } from 'stealthkit/solana'
+import { createPayment, deriveKeys, findPayment, fromSeed, metaAddress, viewKeyOf } from 'stealth-sdk'
+import { solana } from 'stealth-sdk/solana'
 
 const keys = deriveKeys(solana, fromSeed(secret))          // a passkey PRF output, a seed…
 const payment = createPayment(solana, metaAddress(solana, keys), { memo: { note: 'Rent' } })
@@ -120,7 +120,7 @@ Full specification, equations and threat model: **[DESIGN.md](DESIGN.md)**.
 | **Aptos** | ed25519 | SHA3(key ‖ scheme) | envelope in an event | fee-payer transaction |
 | **Stellar** | ed25519 | StrKey `G…` | envelope | claimable balance + fee bump |
 
-One-time keys on the ed25519 chains are raw scalars. stealthkit signs with them directly, and the
+One-time keys on the ed25519 chains are raw scalars. stealth signs with them directly, and the
 signatures verify under standard Ed25519, so a one-time address signs like any account.
 
 **Bring your own chain** in an afternoon: a `ChainAdapter` (how a key becomes an address), the one
@@ -136,7 +136,7 @@ function that signs the chain's transaction, and a line in the test vectors. See
 | The note: who paid and why | A sender paying from their own known wallet |
 | The spending key: relayers and indexers never hold it | Links you make by moving funds to a known wallet |
 
-stealthkit hides *who*, not *how much*. Read [the privacy model](DESIGN.md#11-privacy-model) before you
+stealth hides *who*, not *how much*. Read [the privacy model](DESIGN.md#11-privacy-model) before you
 promise users more.
 
 ## Built for production
@@ -148,8 +148,8 @@ promise users more.
   and [private funds gathered](https://testnet.monadscan.com/tx/0x240552b39b6156883a32cb82f836be137e2d2f9223ed7e796d6fe2699290081d)
   then [spent](https://testnet.monadscan.com/tx/0xcfdc9845ef1f87442a949615541c51b08dcc8473778bf6581c3125f0af06a85b).
 - **Kova-compatible, byte for byte.** A fixture from Kova's own code pins keys, addresses and sealed
-  notes, so stealthkit apps and Kova pay each other privately.
-- **Conformance vectors.** [`stealthkit-v1.json`](test/vectors/stealthkit-v1.json) fixes every output for
+  notes, so stealth apps and Kova pay each other privately.
+- **Conformance vectors.** [`stealth-v1.json`](test/vectors/stealth-v1.json) fixes every output for
   every chain. A Rust, Go or Swift port is correct when it matches.
 - **Hardened.** Every public key is validated on parse (torsion-free on ed25519, so a malicious
   meta-address can't steer a sender into a small subgroup). Notes are bound to their address.
@@ -176,7 +176,7 @@ pnpm build && node examples/05-solana.mjs
 
 ## API
 
-| | `stealthkit` (core) | `stealthkit/evm` |
+| | `stealth-sdk` (core) | `stealth-sdk/evm` |
 |---|---|---|
 | Keys | `deriveKeys`, `fromSignature`, `fromSeed`, `keysMessage` | `stealthKeysFromSignature`, `stealthKeysMessage` |
 | Share | `metaAddress`, `parseMetaAddress`, `encodeViewKey`, `parseViewKey` | `stealthMetaAddress`, `stealthViewKey`, `registerKeysCalldata` |

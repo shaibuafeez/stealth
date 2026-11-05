@@ -1,4 +1,4 @@
-# stealthkit: design
+# stealth: design
 
 **Status:** v1, implemented. **Scope:** private receiving and spending of fungible assets on any
 chain whose accounts are secp256k1 or ed25519 keys. **Reference implementation:** this repository.
@@ -117,7 +117,7 @@ The construction Monero has run since 2014 (CryptoNote one-time addresses), with
 | Public key | `k·B`, RFC 8032 encoding, 32 bytes |
 | Point validation | Must decode, must not be the identity, must be torsion-free (prime-order subgroup) |
 | Shared point | `enc(e·V)`, 32 bytes |
-| Hashed secret | `SHA-512(shared ‖ "stealthkit:ed25519:secret")`, 64 bytes; view tag = first byte |
+| Hashed secret | `SHA-512(shared ‖ "stealth:ed25519:secret")`, 64 bytes; view tag = first byte |
 | Scalar | wide reduction of the 64 bytes mod ℓ |
 | Memo key | first 32 bytes of `SHA-512(shared ‖ label)` |
 
@@ -125,7 +125,7 @@ The construction Monero has run since 2014 (CryptoNote one-time addresses), with
 hash gives `p`. `signWithScalar` signs with `p` directly:
 
 ```
-r = SHA-512( SHA-512("stealthkit:ed25519:nonce" ‖ p)[32..64] ‖ M ) mod ℓ
+r = SHA-512( SHA-512("stealth:ed25519:nonce" ‖ p)[32..64] ‖ M ) mod ℓ
 R = r·B        k = SHA-512(R ‖ A ‖ M) mod ℓ        S = r + k·p mod ℓ        signature = R ‖ S
 ```
 
@@ -137,7 +137,7 @@ address signs Solana, Sui, Aptos and Stellar transactions like any other account
 small-order component could make a sender's shared secret take one of a few values the attacker
 can guess. Rejecting non-torsion-free points on parse closes that.
 
-The scheme id 0x0101 is stealthkit's until an ERC-5564-style registry assigns ed25519 an id.
+The scheme id 0x0101 is stealth's until an ERC-5564-style registry assigns ed25519 an id.
 
 ## 6. Wire formats
 
@@ -171,7 +171,7 @@ layout ERC-5564 recommends for tokens, with the note appended.
 
 ## 7. Keys
 
-Keys come from secret material the user already controls; stealthkit never stores a key.
+Keys come from secret material the user already controls; stealth never stores a key.
 
 | Source | Use | Note |
 |---|---|---|
@@ -264,13 +264,13 @@ funds before gathering them; use several relayers when they're available.
 | Weak randomness | Ephemeral keys and note nonces from the platform CSPRNG (`@noble/hashes`) |
 | Side channels | Curve arithmetic from `@noble/curves`, constant-time where it matters |
 
-stealthkit itself is not audited yet. Its cryptography comes from `@noble/curves` and
+stealth itself is not audited yet. Its cryptography comes from `@noble/curves` and
 `@noble/hashes` (both independently audited) and `@noble/ciphers`, all pure TypeScript with no
 native code.
 
 ## 13. Conformance
 
-`test/vectors/stealthkit-v1.json` is **normative**: fixed inputs and every output (keys,
+`test/vectors/stealth-v1.json` is **normative**: fixed inputs and every output (keys,
 meta-address, view key, one-time address, view tag, one-time private key, sealed note, envelope) for
 each chain. A port to another language is conformant when it reproduces every value.
 `test/vectors/kova-evm.json` comes from Kova's production code and pins EVM compatibility.
