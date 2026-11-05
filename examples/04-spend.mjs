@@ -8,7 +8,7 @@ import {
   stealthKeysFromSignature,
   stealthMetaAddress,
   stealthPrivateKey,
-} from 'stealth-sdk/evm'
+} from 'stealth/evm'
 
 const keys = stealthKeysFromSignature(await privateKeyToAccount(generatePrivateKey()).signMessage({ message: 'demo' }))
 const payment = generateStealthPayment(stealthMetaAddress(keys)) // as a sender would have made it

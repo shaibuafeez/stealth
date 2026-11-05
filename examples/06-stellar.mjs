@@ -3,8 +3,8 @@
 //    fee-bumps and whose reserves it sponsors, so the receiver never holds XLM.
 //    node examples/06-stellar.mjs
 import { randomBytes } from 'node:crypto'
-import { createPayment, deriveKeys, findPayment, fromSeed, metaAddress, paymentPrivateKey, utf8, viewKeyOf } from 'stealth-sdk'
-import { signStellarTransaction, STELLAR_PUBLIC_NETWORK, stellar } from 'stealth-sdk/stellar'
+import { createPayment, deriveKeys, findPayment, fromSeed, metaAddress, paymentPrivateKey, utf8, viewKeyOf } from 'stealth'
+import { signStellarTransaction, STELLAR_PUBLIC_NETWORK, stellar } from 'stealth/stellar'
 
 const keys = deriveKeys(stellar, fromSeed(randomBytes(32)))
 const payment = createPayment(stellar, metaAddress(stellar, keys))

@@ -22,5 +22,5 @@ exactly as the chain's own tools encode it, and its vector in `scripts/vectors.m
 ## Before you open a pull request
 
 ```bash
-pnpm typecheck && pnpm test && pnpm build
+pnpm typecheck && pnpm test && pnpm compile
 ```

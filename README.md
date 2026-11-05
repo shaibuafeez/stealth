@@ -34,13 +34,13 @@ st:stellar… ──►  GB4CMZAIQ4SKEANSBZUBRXDZBT5T5FU2ZFNOS554NQI5MV3HT2HNYSC
 ## Quick start
 
 ```bash
-npm install stealth-sdk viem
+npm install github:shaibuafeez/stealth viem
 ```
 
 **Receive.** Make keys from a signature your wallet already gives you. Nothing to store.
 
 ```ts
-import { stealthKeysFromSignature, stealthKeysMessage, stealthMetaAddress } from 'stealth-sdk/evm'
+import { stealthKeysFromSignature, stealthKeysMessage, stealthMetaAddress } from 'stealth/evm'
 
 const signature = await wallet.signMessage({ message: stealthKeysMessage('MyApp', wallet.address) })
 const keys = stealthKeysFromSignature(signature)
@@ -50,7 +50,7 @@ const meta = stealthMetaAddress(keys) // st:eth:0x… share it, or publish it in
 **Send.** A fresh address for this payment, and a note only the receiver can read.
 
 ```ts
-import { announceCalldata, generateStealthPayment } from 'stealth-sdk/evm'
+import { announceCalldata, generateStealthPayment } from 'stealth/evm'
 
 const payment = generateStealthPayment(meta, { name: 'Ada', note: 'For lunch' })
 // pay payment.stealthAddress, then announce it so the receiver can find it:
@@ -60,7 +60,7 @@ const data = announceCalldata(payment, token, amount) // → ERC-5564 announcer
 **Find and spend.** Scan with the viewing key; spend with a signature a relayer submits.
 
 ```ts
-import { scanAnnouncements, signStealthTransfer, stealthPrivateKey, viewKeyOf } from 'stealth-sdk/evm'
+import { scanAnnouncements, signStealthTransfer, stealthPrivateKey, viewKeyOf } from 'stealth/evm'
 
 const [found] = await scanAnnouncements({ client, view: viewKeyOf(keys), fromBlock, toBlock })
 const key = stealthPrivateKey(keys, found.ephemeralPublicKey)
@@ -71,8 +71,8 @@ const { calldata } = await signStealthTransfer({ stealthPrivateKey: key, token, 
 The same three moves on Solana, Sui, Aptos or Stellar, with the chain-neutral core:
 
 ```ts
-import { createPayment, deriveKeys, findPayment, fromSeed, metaAddress, viewKeyOf } from 'stealth-sdk'
-import { solana } from 'stealth-sdk/solana'
+import { createPayment, deriveKeys, findPayment, fromSeed, metaAddress, viewKeyOf } from 'stealth'
+import { solana } from 'stealth/solana'
 
 const keys = deriveKeys(solana, fromSeed(secret))          // a passkey PRF output, a seed…
 const payment = createPayment(solana, metaAddress(solana, keys), { memo: { note: 'Rent' } })
@@ -171,12 +171,12 @@ pnpm install
 pnpm test          # 64 tests: every chain, Kova compatibility, conformance vectors
 pnpm typecheck
 pnpm vectors       # rebuild the conformance vectors
-pnpm build && node examples/05-solana.mjs
+pnpm compile && node examples/05-solana.mjs
 ```
 
 ## API
 
-| | `stealth-sdk` (core) | `stealth-sdk/evm` |
+| | `stealth` (core) | `stealth/evm` |
 |---|---|---|
 | Keys | `deriveKeys`, `fromSignature`, `fromSeed`, `keysMessage` | `stealthKeysFromSignature`, `stealthKeysMessage` |
 | Share | `metaAddress`, `parseMetaAddress`, `encodeViewKey`, `parseViewKey` | `stealthMetaAddress`, `stealthViewKey`, `registerKeysCalldata` |

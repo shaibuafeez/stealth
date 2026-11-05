@@ -8,7 +8,7 @@ import {
   scanAnnouncements,
   stealthKeysFromSignature,
   viewKeyOf,
-} from 'stealth-sdk/evm'
+} from 'stealth/evm'
 
 const chain = defineChain({
   id: monad.mainnet.chainId,

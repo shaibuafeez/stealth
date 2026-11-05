@@ -13,8 +13,8 @@ import {
   utf8,
   verifyEd25519,
   viewKeyOf,
-} from 'stealth-sdk'
-import { signSolanaMessage, solana } from 'stealth-sdk/solana'
+} from 'stealth'
+import { signSolanaMessage, solana } from 'stealth/solana'
 
 // The receiver's keys, from a secret it already has (a passkey's PRF output, a seed phrase…).
 const keys = deriveKeys(solana, fromSeed(randomBytes(32)))

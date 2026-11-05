@@ -1,5 +1,5 @@
 {
-  "name": "stealth-sdk",
+  "name": "stealth",
   "version": "1.0.0",
   "description": "Private payments on any chain: one-time stealth addresses, sealed notes, view keys and gasless spending. ERC-5564 on EVM, an ed25519 scheme for Solana, Sui, Aptos and Stellar. Extracted from Kova.",
   "license": "MIT",
@@ -62,15 +62,14 @@
     "stellar"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "example:receive": "pnpm build && node examples/01-receive.mjs",
-    "example:send": "pnpm build && node examples/02-send.mjs",
-    "example:scan": "pnpm build && node examples/03-scan.mjs",
-    "example:spend": "pnpm build && node examples/04-spend.mjs",
-    "vectors": "pnpm build && node scripts/vectors.mjs",
-    "prepublishOnly": "pnpm typecheck && pnpm test && pnpm build"
+    "example:receive": "pnpm compile && node examples/01-receive.mjs",
+    "example:send": "pnpm compile && node examples/02-send.mjs",
+    "example:scan": "pnpm compile && node examples/03-scan.mjs",
+    "example:spend": "pnpm compile && node examples/04-spend.mjs",
+    "vectors": "pnpm compile && node scripts/vectors.mjs",
+    "compile": "tsc -p tsconfig.build.json"
   },
   "engines": {
     "node": ">=22"
@@ -86,5 +85,6 @@
     "@types/node": "^22",
     "typescript": "6.0.3",
     "vitest": "5.0.1"
-  }
+  },
+  "private": true
 }

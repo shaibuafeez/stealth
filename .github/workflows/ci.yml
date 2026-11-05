@@ -15,4 +15,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
       - run: pnpm test
-      - run: pnpm build
+      - run: pnpm compile
+      # dist is committed so the package installs straight from GitHub: it must match the source.
+      - run: git diff --exit-code dist

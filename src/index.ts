@@ -4,11 +4,11 @@
  * The core is chain-neutral (keys, meta-addresses, one-time addresses, view keys, sealed notes,
  * the announcement envelope, the privacy router). Chains plug in through an adapter:
  *
- *   import { evm } from 'stealth-sdk/evm'          // Monad, Ethereum, Base, … (ERC-5564)
- *   import { solana } from 'stealth-sdk/solana'
- *   import { sui } from 'stealth-sdk/sui'
- *   import { aptos } from 'stealth-sdk/aptos'
- *   import { stellar } from 'stealth-sdk/stellar'
+ *   import { evm } from 'stealth/evm'          // Monad, Ethereum, Base, … (ERC-5564)
+ *   import { solana } from 'stealth/solana'
+ *   import { sui } from 'stealth/sui'
+ *   import { aptos } from 'stealth/aptos'
+ *   import { stellar } from 'stealth/stellar'
  */
 export * from './core/bytes.js'
 export * from './core/envelope.js'
